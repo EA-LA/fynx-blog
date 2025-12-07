@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FYNX for Android — coming soon</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050608;
+      --accent: #3ce4ff;
+      --text-main: #f5f5f7;
+      --text-muted: #a3a7b3;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui,-apple-system,"SF Pro Text",sans-serif;
+      background: radial-gradient(circle at top, #171b23 0, #050608 50%, #020205 100%);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(60,228,255,0.20) 0, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(255,255,255,0.10) 0, transparent 60%);
+      opacity: 0.28;
+      mix-blend-mode: screen;
+      animation: drift 32s linear infinite alternate;
+      z-index: -1;
+      filter: blur(6px);
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(-5%, -3%, 0); }
+      to   { transform: translate3d(5%, 3%, 0); }
+    }
+
+    .card {
+      max-width: 440px;
+      width: 100%;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(10, 12, 18, 0.95);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.7);
+      padding: 22px 20px 20px;
+      text-align: left;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 0 0 8px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 0 0 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(60,228,255,0.14);
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    a.btn {
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.18);
+      text-decoration: none;
+      color: var(--text-main);
+      background: rgba(3,4,8,0.9);
+    }
+
+    a.btn-primary {
+      border-color: transparent;
+      background: linear-gradient(135deg,#3ce4ff,#37c5ff);
+      color: #020308;
+    }
+
+    a.btn:hover {
+      border-color: rgba(255,255,255,0.34);
+    }
+
+    .back-link {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .back-link a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">Android</div>
+    <div class="badge">Coming soon</div>
+    <h1>FYNX for Android is on the way</h1>
+    <p>
+      We&#8217;re building the same FYNX experience for high-performance traders on Android:
+      Guardian Engine, calculators, Journal 2.0 and more. Join the waitlist and we&#8217;ll
+      email you when the app goes live.
+    </p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:ha6876122@gmail.com?subject=FYNX%20Android%20waitlist">
+        Join Android waitlist
+      </a>
+      <a class="btn" href="index.html">Back to blog</a>
+    </div>
+
+    <div class="back-link">
+      iOS user? Download FYNX from the
+      <a href="https://apps.apple.com/us/app/fynx-finance-world/id6752357210" target="_blank">
+        App Store
+      </a>.
+    </div>
+  </div>
+</body>
+</html>
