@@ -1,167 +1,620 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>FYNX – Decrypt Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <title>Decrypt — FYNX product & company updates</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050608;
+      --card-bg: rgba(18, 20, 26, 0.94);
+      --card-border: rgba(255, 255, 255, 0.04);
+      --accent: #3ce4ff;
+      --accent-soft: rgba(60, 228, 255, 0.18);
+      --text-main: #f5f5f7;
+      --text-muted: #a3a7b3;
+      --badge-bg: rgba(255, 255, 255, 0.06);
+      --radius-lg: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui,-apple-system,"SF Pro Text",sans-serif;
+      background: radial-gradient(circle at top, #171b23 0, #050608 50%, #020205 100%);
+      color: var(--text-main);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Grok-ish moving background */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: -40%;
+      pointer-events: none;
+      opacity: 0.22;
+      mix-blend-mode: screen;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(255,255,255,0.16) 0, transparent 55%),
+        radial-gradient(circle at 90% 100%, rgba(60,228,255,0.22) 0, transparent 55%);
+      animation: drift 32s linear infinite alternate;
+      z-index: -2;
+    }
+
+    body::after {
+      filter: blur(18px);
+      opacity: 0.16;
+      animation-duration: 46s;
+      animation-direction: alternate-reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translate3d(-4%, -4%, 0) scale(1); }
+      to   { transform: translate3d(4%, 4%, 0) scale(1.05); }
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .logo-wordmark {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .logo-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: inherit;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: border .18s ease, color .18s ease, background .18s ease;
+    }
+
+    nav a:hover {
+      color: var(--text-main);
+      border-color: rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* HERO */
+
+    .hero {
+      border-radius: 28px;
+      padding: 24px 20px 22px;
+      background: radial-gradient(circle at top right, rgba(60,228,255,0.15), transparent 55%),
+                  radial-gradient(circle at bottom left, rgba(255,255,255,0.08), transparent 55%),
+                  var(--card-bg);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 26px 80px rgba(0,0,0,0.65);
+      margin-bottom: 26px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr);
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 780px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: clamp(22px, 3vw, 26px);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .hero-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 420px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 13px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: background .18s ease, transform .12s ease, box-shadow .18s ease, border .18s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #3ce4ff, #37c5ff);
+      color: #020308;
+      box-shadow: 0 14px 40px rgba(60,228,255,0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 46px rgba(60,228,255,0.60);
+    }
+
+    .btn-ghost {
+      border-color: rgba(255,255,255,0.20);
+      background: rgba(9, 11, 18, 0.75);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: rgba(15, 17, 26, 0.95);
+    }
+
+    /* SECTION TITLE */
+
+    .section-headline {
+      margin-top: 30px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* CARDS */
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border);
+      padding: 16px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at 0 0, rgba(60,228,255,0.12), transparent 55%);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: var(--badge-bg);
+      color: var(--text-muted);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .card-footer {
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tag-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .card-link {
+      font-size: 12px;
+      text-decoration: none;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-link span {
+      font-size: 15px;
+      line-height: 0;
+    }
+
+    /* DOWNLOAD STRIP */
+
+    .download-strip {
+      margin-top: 10px;
+      margin-bottom: 26px;
+      padding: 18px 16px;
+      border-radius: 18px;
+      background: radial-gradient(circle at left, rgba(60,228,255,0.12), transparent 60%),
+                  rgba(9, 12, 18, 0.96);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .download-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .download-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: var(--text-main);
+    }
+
+    .store-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .store-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(8, 10, 16, 0.95);
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 12px;
+    }
+
+    .store-btn-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      color: var(--text-muted);
+    }
+
+    .store-btn-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      margin-top: 24px;
+      padding-top: 22px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .footer-heading {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: #e0e0ea;
+      margin-bottom: 8px;
+    }
+
+    .footer-col a {
+      display: block;
+      text-decoration: none;
+      color: var(--text-muted);
+      padding: 3px 0;
+      transition: color .18s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--text-main);
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom a {
+      text-decoration: none;
+      color: var(--text-muted);
+    }
+
+    .footer-bottom a:hover {
+      color: var(--text-main);
+    }
+  </style>
 </head>
 <body>
-  <div class="aurora-bg"></div>
-  <div class="noise-overlay"></div>
+  <div class="page">
+    <header>
+      <div class="logo-wordmark">
+        <div class="logo-title">FYNX</div>
+        <div class="logo-sub">Decrypt – product & company updates</div>
+      </div>
+      <nav>
+        <a href="https://elhamamini.cc/FYNX-Site/index.html" target="_blank">Home</a>
+        <a href="https://elhamamini.cc/FYNX-Site/faqs.html" target="_blank">FAQ</a>
+        <a href="#blog">Blog</a>
+        <a href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank">Support</a>
+      </nav>
+    </header>
 
-  <!-- Top bar -->
-  <header class="site-header">
-    <div class="logo">FYNX</div>
-    <nav class="nav-links">
-      <a href="#blog">Blog</a>
-      <a href="#product">Product</a>
-      <a href="#programs">Programs</a>
-      <a href="#support">Support</a>
-    </nav>
-  </header>
-
-  <main class="page">
-
-    <!-- Hero / Press enquiries style -->
+    <!-- HERO -->
     <section class="hero">
-      <div class="hero-tag">PRESS ENQUIRIES</div>
-      <h1 class="hero-title">Got a media or product enquiry?</h1>
-      <p class="hero-text">
-        For interviews, product features or press coverage, reach out to the FYNX team.
-        For customer questions about the app, use our support email.
-      </p>
-
+      <div>
+        <div class="hero-label">Press enquiries</div>
+        <div class="hero-title">Got a media or product enquiry?</div>
+        <p class="hero-body">
+          For interviews, product features or press coverage, reach out to the FYNX team.
+          For customer questions about the app, use our support channel.
+        </p>
+      </div>
       <div class="hero-actions">
-        <a class="btn-primary" href="mailto:media@fynx.ai">Contact press team</a>
-        <a class="btn-ghost" href="mailto:support@fynx.ai">Contact support</a>
+        <!-- 🔗 Press: goes to your email for now – change to any email you like -->
+        <a class="btn btn-primary" href="mailto:ha6876122@gmail.com">
+          Contact press team
+        </a>
+
+        <!-- 🔗 Support: your existing support page -->
+        <a class="btn btn-ghost" href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank">
+          Contact support
+        </a>
       </div>
     </section>
 
-    <!-- Blog cards (this is what people see when they tap “Check out our blog”) -->
-    <section id="blog" class="section">
-      <div class="section-header">
-        <h2>Decrypt – FYNX product & company updates</h2>
-        <p>Deep dives into the features inside your app, risk tools, and new releases.</p>
-      </div>
-
-      <div class="cards-grid">
-
-        <!-- CARD 1 – Guardian Engine -->
-        <article class="card">
-          <div class="card-tag">Product Features</div>
-          <h3 class="card-title">Guardian: Your risk & emotion firewall</h3>
-          <p class="card-text">
-            How Guardian watches your daily risk, tracks streaks and shields your account
-            from revenge trading. Screenshots, examples and setup guide.
-          </p>
-          <div class="card-footer">
-            <span class="card-meta">FYNX • Risk</span>
-            <button class="card-btn">View breakdown</button>
-          </div>
-        </article>
-
-        <!-- CARD 2 – Calculators -->
-        <article class="card">
-          <div class="card-tag">Product Features</div>
-          <h3 class="card-title">Inside the FYNX calculators stack</h3>
-          <p class="card-text">
-            All the tools under one roof – lot size, margin, pip value, options & more.
-            We show real trading examples and how the math is done for you.
-          </p>
-          <div class="card-footer">
-            <span class="card-meta">FYNX • Calculators</span>
-            <button class="card-btn">View screenshots</button>
-          </div>
-        </article>
-
-        <!-- CARD 3 – Journal -->
-        <article class="card">
-          <div class="card-tag">Announcements</div>
-          <h3 class="card-title">Trading Journal 2.0 is now live</h3>
-          <p class="card-text">
-            A new way to document your plays with tags, screenshots and Guardian
-            metrics baked in. Built for funded traders and serious accounts.
-          </p>
-          <div class="card-footer">
-            <span class="card-meta">FYNX • Journal</span>
-            <button class="card-btn">See what changed</button>
-          </div>
-        </article>
-
-        <!-- CARD 4 – Prop Mode -->
-        <article class="card">
-          <div class="card-tag">Promotions</div>
-          <h3 class="card-title">Prop Mode: Built for challenge accounts</h3>
-          <p class="card-text">
-            Track daily drawdown, overall rules and reset behaviour for any prop firm.
-            We explain the logic, alerts and how to avoid blowing evaluations.
-          </p>
-          <div class="card-footer">
-            <span class="card-meta">FYNX • Prop</span>
-            <button class="card-btn">Learn more</button>
-          </div>
-        </article>
-
+    <!-- BLOG CARDS -->
+    <section id="blog" class="section-headline">
+      <div class="section-title">Decrypt — FYNX product &amp; company updates</div>
+      <div class="section-sub">
+        Deep dives into the features inside your app, risk tools and new releases.
       </div>
     </section>
 
-    <!-- Download buttons (like KAST) -->
-    <section class="section" id="product">
-      <div class="section-header">
-        <h2>Download FYNX</h2>
-        <p>Built for traders, challenge accounts and high-performance brains.</p>
+    <section class="cards-grid">
+      <!-- CARD 1 -->
+      <article class="card">
+        <div class="card-pill">Product Features</div>
+        <div class="card-title">Guardian: Your risk &amp; emotion firewall</div>
+        <p class="card-body">
+          How Guardian watches your daily risk, tracks streaks and shields your
+          account from revenge trading. Screenshots, examples and setup guide.
+        </p>
+        <div class="card-footer">
+          <span class="tag-pill">FYNX • Risk</span>
+          <a class="card-link" href="#">
+            View breakdown <span>↗</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 2 -->
+      <article class="card">
+        <div class="card-pill">Product Features</div>
+        <div class="card-title">Inside the FYNX calculators stack</div>
+        <p class="card-body">
+          All the tools under one roof – lot size, margin, pip value, options &amp; more.
+          We show real trading examples and how the math is done for you.
+        </p>
+        <div class="card-footer">
+          <span class="tag-pill">FYNX • Calculators</span>
+          <a class="card-link" href="#">
+            View screenshots <span>↗</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 3 -->
+      <article class="card">
+        <div class="card-pill">Announcements</div>
+        <div class="card-title">Trading Journal 2.0 is now live</div>
+        <p class="card-body">
+          A new way to document your plays with tags, screenshots and Guardian
+          metrics baked in. Built for funded traders and serious accounts.
+        </p>
+        <div class="card-footer">
+          <span class="tag-pill">FYNX • Journal</span>
+          <a class="card-link" href="#">
+            See what changed <span>↗</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 4 -->
+      <article class="card">
+        <div class="card-pill">Promotions</div>
+        <div class="card-title">Prop Mode: Built for challenge accounts</div>
+        <p class="card-body">
+          Track daily drawdown, overall limits and reset behaviour for any prop
+          rule set. We explain the logic, alerts and how Guardian helps you
+          avoid blowing evaluations.
+        </p>
+        <div class="card-footer">
+          <span class="tag-pill">FYNX • Prop</span>
+          <a class="card-link" href="#">
+            Learn more <span>↗</span>
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <!-- DOWNLOAD STRIP -->
+    <section class="download-strip">
+      <div>
+        <div class="download-title">Download FYNX</div>
+        <div class="download-text">
+          Built for traders, challenge accounts and high-performance brains.
+        </div>
       </div>
-      <div class="store-badges">
-        <a href="#" class="store-badge">Download on the App Store</a>
-        <a href="#" class="store-badge">Get it on Google Play</a>
+      <div class="store-buttons">
+        <!-- ✅ REAL APP STORE LINK -->
+        <a class="store-btn"
+           href="https://apps.apple.com/us/app/fynx-finance-world/id6752357210"
+           target="_blank">
+          <div>
+            <div class="store-btn-label">Download on the</div>
+            <div class="store-btn-title">App Store</div>
+          </div>
+        </a>
+
+        <!-- 👉 ANDROID COMING SOON PAGE -->
+        <a class="store-btn" href="google-play.html">
+          <div>
+            <div class="store-btn-label">Get it on</div>
+            <div class="store-btn-title">Google Play</div>
+          </div>
+        </a>
       </div>
     </section>
 
-    <!-- Footer columns like KAST -->
-    <footer class="site-footer">
-      <div class="footer-columns">
-        <div class="footer-col" id="company">
-          <h4>COMPANY</h4>
-          <a href="#">About</a>
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-heading">Company</div>
+          <a href="https://elhamamini.cc/FYNX-Site/index.html" target="_blank">About</a>
           <a href="#blog">Blog</a>
           <a href="#">Careers</a>
           <a href="#">Media Kit</a>
         </div>
 
         <div class="footer-col">
-          <h4>PRODUCT</h4>
+          <div class="footer-heading">Product</div>
           <a href="#">Calculators</a>
           <a href="#">Guardian Engine</a>
           <a href="#">Trading Journal</a>
           <a href="#">Prop Mode</a>
         </div>
 
-        <div class="footer-col" id="programs">
-          <h4>PROGRAMS</h4>
+        <div class="footer-col">
+          <div class="footer-heading">Programs</div>
           <a href="#">Affiliates</a>
           <a href="#">Beta Program</a>
           <a href="#">Ambassador</a>
         </div>
 
-        <div class="footer-col" id="support">
-          <h4>SUPPORT</h4>
-          <a href="#">Help Center</a>
-          <a href="mailto:support@fynx.ai">Support</a>
+        <div class="footer-col">
+          <div class="footer-heading">Support</div>
+          <a href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank">Help Center</a>
+          <a href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank">Support</a>
           <a href="#">Status</a>
           <a href="#">Verify</a>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span>© 2025 FYNX. All rights reserved.</span>
-        <div class="footer-links">
-          <a href="#">Risk Disclosure</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms & Conditions</a>
+        <div>© 2025 FYNX. All rights reserved.</div>
+        <div class="footer-bottom-links">
+          <!-- NEW RISK DISCLOSURE PAGE -->
+          <a href="risk-disclosure.html">Risk Disclosure</a>
+          <a href="https://elhamamini.cc/FYNX-Site/privacy.html" target="_blank">Privacy Policy</a>
+          <a href="https://elhamamini.cc/FYNX-Site/terms.html" target="_blank">Terms &amp; Conditions</a>
         </div>
       </div>
     </footer>
-  </main>
+  </div>
 </body>
 </html>
