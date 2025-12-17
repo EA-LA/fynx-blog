@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "guardian-firewall",
+    "category": "Product Features",
+    "title": "Guardian: Your risk & emotion firewall",
+    "excerpt": "How Guardian watches your daily risk, flags streaks, and shields your account from revenge trading.",
+    "date": "2025-12-17",
+    "tags": ["risk", "discipline", "journal"]
+  },
+  {
+    "slug": "calculators-stack",
+    "category": "Product Features",
+    "title": "Inside the FYNX calculators stack",
+    "excerpt": "Lot size, margin, pip value, options and more—how the math is done for you.",
+    "date": "2025-12-17",
+    "tags": ["calculators", "risk", "tools"]
+  },
+  {
+    "slug": "journal-2-live",
+    "category": "Announcements",
+    "title": "Trading Journal 2.0 is now live",
+    "excerpt": "A new way to document your plays with tags, screenshots, and Guardian metrics.",
+    "date": "2025-12-17",
+    "tags": ["journal", "updates"]
+  },
+  {
+    "slug": "prop-mode-challenge",
+    "category": "Promotions",
+    "title": "Prop Mode: Built for challenge accounts",
+    "excerpt": "Track daily drawdown, overall limits, and stay evaluation-ready with Guardian signals.",
+    "date": "2025-12-17",
+    "tags": ["prop", "ftmo", "rules"]
+  }
+]
