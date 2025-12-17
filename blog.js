@@ -1,6 +1,6 @@
 async function loadPosts() {
   const res = await fetch("./posts.json", { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load posts.json");
+  if (!res.ok) throw new Error("posts.json failed to load");
   return await res.json();
 }
 
@@ -9,17 +9,20 @@ function formatDate(iso) {
   return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
 }
 
-function postCard(p) {
+function cardHTML(p) {
   return `
     <a class="card" href="./post.html?slug=${encodeURIComponent(p.slug)}">
-      <div class="cardTop">
-        <span class="pill">${p.category}</span>
-        <span class="date">${formatDate(p.date)}</span>
+      <div class="card-top">
+        <span class="card-tag">${p.category}</span>
+        <span class="card-date">${formatDate(p.date)}</span>
       </div>
-      <h3>${p.title}</h3>
-      <p>${p.excerpt}</p>
-      <div class="cardBottom">
-        <span class="link">Read more →</span>
+
+      <h3 class="card-title">${p.title}</h3>
+      <p class="card-text">${p.excerpt}</p>
+
+      <div class="card-footer">
+        <span class="card-meta">${p.meta || ""}</span>
+        <span class="card-link">Read →</span>
       </div>
     </a>
   `;
@@ -27,47 +30,45 @@ function postCard(p) {
 
 async function main() {
   const grid = document.getElementById("postsGrid");
-  const search = document.getElementById("searchInput");
-  const filters = document.querySelectorAll("[data-filter]");
+  const searchInput = document.getElementById("searchInput");
+  const filterButtons = Array.from(document.querySelectorAll(".filter"));
 
   const posts = await loadPosts();
 
-  function render(list) {
-    grid.innerHTML = list.map(postCard).join("");
+  function getActiveFilter() {
+    const btn = filterButtons.find(b => b.classList.contains("active"));
+    return btn ? btn.dataset.filter : "all";
   }
 
   function apply() {
-    const q = (search?.value || "").trim().toLowerCase();
-    const active = document.querySelector("[data-filter].active")?.dataset.filter || "all";
+    const q = (searchInput?.value || "").trim().toLowerCase();
+    const active = getActiveFilter();
 
     const filtered = posts.filter(p => {
-      const hay = `${p.category} ${p.title} ${p.excerpt} ${(p.tags || []).join(" ")}`.toLowerCase();
-      const matchesQ = !q || hay.includes(q);
-      const matchesC = active === "all" || p.category === active;
-      return matchesQ && matchesC;
+      const matchesFilter = active === "all" || p.category === active;
+      const hay = `${p.category} ${p.title} ${p.excerpt} ${p.meta || ""}`.toLowerCase();
+      const matchesSearch = !q || hay.includes(q);
+      return matchesFilter && matchesSearch;
     });
 
-    render(filtered);
+    grid.innerHTML = filtered.map(cardHTML).join("");
   }
 
-  filters.forEach(btn => {
+  filterButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-      filters.forEach(b => b.classList.remove("active"));
+      filterButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       apply();
     });
   });
 
-  if (search) search.addEventListener("input", apply);
+  if (searchInput) searchInput.addEventListener("input", apply);
 
-  // Default
-  const first = document.querySelector('[data-filter="all"]');
-  if (first) first.classList.add("active");
-
-  render(posts);
+  apply();
 }
+
 main().catch(err => {
   console.error(err);
   const grid = document.getElementById("postsGrid");
-  if (grid) grid.innerHTML = `<div class="error">Blog failed to load. Check posts.json path.</div>`;
+  if (grid) grid.innerHTML = `<div style="color:#ffb4b4">Blog failed to load. Check file paths.</div>`;
 });
