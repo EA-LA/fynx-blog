@@ -1,58 +1,41 @@
-<!doctype html>
+<<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FYNX — Post</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="wrap topbarInner">
-      <a class="brand" href="./index.html">FYNX</a>
-      <nav class="nav">
-        <a href="./index.html">Blog</a>
-        <a href="./risk-disclosure.html">Risk</a>
-        <a href="./google-play.html">Android</a>
-      </nav>
-    </div>
+  <div class="aurora-bg"></div>
+  <div class="noise-overlay"></div>
+
+  <header class="site-header">
+    <div class="logo">FYNX</div>
+    <nav class="nav-links">
+      <a href="./index.html">Blog</a>
+      <a href="https://elhamamini.cc/FYNX-Site/index.html" target="_blank" rel="noreferrer">Home</a>
+      <a href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank" rel="noreferrer">Support</a>
+    </nav>
   </header>
 
-  <main class="wrap postWrap">
-    <a class="back" href="./index.html">← Back to updates</a>
+  <main class="page">
+    <section class="post-wrap">
+      <a class="back-link" href="./index.html">← Back to updates</a>
 
-    <article class="post">
-      <div class="postMeta">
-        <span id="postCategory" class="pill"></span>
-        <span id="postDate" class="date"></span>
+      <div class="post-meta">
+        <span id="postCategory" class="card-tag"></span>
+        <span id="postDate" class="card-date"></span>
       </div>
 
-      <h1 id="postTitle" class="postTitle"></h1>
-      <p id="postExcerpt" class="postExcerpt"></p>
+      <h1 id="postTitle" class="post-title"></h1>
+      <p id="postExcerpt" class="post-excerpt"></p>
 
-      <div id="postBody" class="postBody"></div>
-    </article>
+      <div id="postBody" class="post-body"></div>
+    </section>
   </main>
 
-  <footer class="footer">
-    <div class="wrap footerInner">
-      <div class="footerCols">
-        <div>
-          <div class="footerTitle">Company</div>
-          <a href="./index.html">Blog</a>
-          <a href="./risk-disclosure.html">Risk Disclosure</a>
-        </div>
-        <div>
-          <div class="footerTitle">Support</div>
-          <a href="#">Help Center</a>
-          <a href="#">Contact</a>
-        </div>
-      </div>
-      <div class="footerBottom">© <span id="year"></span> FYNX. All rights reserved.</div>
-    </div>
-  </footer>
-
   <script src="./post.js"></script>
-  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
