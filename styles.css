@@ -572,3 +572,34 @@ button { font-family: inherit; }
 @media (max-width: 480px) {
   .footer-columns { grid-template-columns: 1fr 1fr; }
 }
+
+/* =========================
+   ✅ ONLY ADDED: VIDEO BACKGROUND LAYER
+   ========================= */
+
+.bg-video-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: -999;      /* always behind everything */
+  pointer-events: none;
+  overflow: hidden;
+  background: #050608; /* fallback if video doesn't load */
+}
+
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.35; /* subtle so your current design stays the same */
+  filter: grayscale(1) contrast(1.1) brightness(0.6);
+  transform: scale(1.02);
+}
+
+.bg-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(0,0,0,0.10), rgba(0,0,0,0.70));
+  opacity: 1;
+}
