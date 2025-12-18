@@ -10,7 +10,7 @@
   --text-soft: #a5a5b0;
 
   --accent: #30f0b0;
-  --accent-soft: rgba(48, 240, 176, 0.22);
+  --accent-soft: rgba(48, 240, 176, 0.18);
 
   --radius-lg: 22px;
   --radius-md: 18px;
@@ -23,12 +23,9 @@
 
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   font-family: var(--font);
@@ -40,7 +37,7 @@ a { color: inherit; }
 button { font-family: inherit; }
 
 /* =========================
-   GROK / ALIVE BACKGROUND
+   ALIVE GROK BACKGROUND
    ========================= */
 
 /* moving canvas (monochrome) */
@@ -49,41 +46,73 @@ button { font-family: inherit; }
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: -3;
+  z-index: -6;
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
-/* animated aurora base (very subtle) */
+/* subtle aurora base */
 .aurora-bg {
   position: fixed;
   inset: -20%;
   background:
-    radial-gradient(circle at 10% 0%, #1a2030 0, transparent 55%),
-    radial-gradient(circle at 90% 10%, #122025 0, transparent 55%),
-    radial-gradient(circle at 0% 100%, #101820 0, transparent 60%),
-    radial-gradient(circle at 100% 80%, #07151b 0, transparent 60%);
+    radial-gradient(circle at 12% 8%, rgba(255,255,255,0.06) 0, transparent 58%),
+    radial-gradient(circle at 88% 18%, rgba(255,255,255,0.04) 0, transparent 60%),
+    radial-gradient(circle at 20% 92%, rgba(48,240,176,0.05) 0, transparent 62%),
+    radial-gradient(circle at 90% 84%, rgba(255,255,255,0.03) 0, transparent 62%);
   background-size: 160% 160%;
-  animation: drift 32s linear infinite alternate;
-  z-index: -4;
+  animation: drift 34s linear infinite alternate;
+  z-index: -7;
   filter: saturate(0.25);
 }
 
+/* slow sheen to make it feel alive (very subtle) */
+.sheen {
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: -5;
+  opacity: 0.10;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.14), transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.10), transparent 55%);
+  animation: sheenMove 22s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+}
+
+/* vignette for cinematic depth */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -4;
+  background: radial-gradient(circle at 50% 30%,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.35) 58%,
+    rgba(0,0,0,0.62) 100%);
+}
+
+/* grain */
 .noise-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.14;
   mix-blend-mode: soft-light;
   background-image: url("https://grainy-gradients.vercel.app/noise.svg");
   background-size: 220px;
-  z-index: -2;
+  z-index: -3;
 }
 
 @keyframes drift {
-  0%   { transform: translate3d(-20px, -20px, 0) scale(1.05); }
-  50%  { transform: translate3d(15px, 10px, 0) scale(1.04); }
-  100% { transform: translate3d(-10px, 15px, 0) scale(1.06); }
+  0%   { transform: translate3d(-18px, -18px, 0) scale(1.04); }
+  50%  { transform: translate3d(16px, 10px, 0) scale(1.03); }
+  100% { transform: translate3d(-12px, 16px, 0) scale(1.05); }
+}
+
+@keyframes sheenMove {
+  0%   { transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+  100% { transform: translate3d(1.5%, 1%, 0) scale(1.05); }
 }
 
 /* =========================
@@ -148,11 +177,44 @@ button { font-family: inherit; }
 .nav-links a:hover::after { width: 100%; }
 
 /* =========================
-   HERO
+   LIVE MARKETS TOP STRIP
+   ========================= */
+
+.top-strip {
+  margin-top: 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  padding: 14px 14px 10px;
+  box-shadow: var(--shadow-soft);
+}
+
+.top-strip-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.top-strip-title {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+}
+
+.top-strip-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+}
+
+/* =========================
+   HERO (Press)
    ========================= */
 
 .hero {
-  margin-top: 36px;
+  margin-top: 18px;
   padding: 32px 24px;
   border-radius: 28px;
   background:
@@ -178,7 +240,7 @@ button { font-family: inherit; }
 
 .hero-text {
   color: var(--text-soft);
-  max-width: 640px;
+  max-width: 680px;
   font-size: 14px;
   line-height: 1.6;
   margin: 0;
@@ -224,26 +286,6 @@ button { font-family: inherit; }
 }
 
 /* =========================
-   LIVE MARKET STRIP
-   ========================= */
-
-.market-strip {
-  margin-top: 16px;
-  padding: 14px 14px;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.02);
-}
-
-.market-title {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
-  margin-bottom: 10px;
-}
-
-/* =========================
    SECTIONS
    ========================= */
 
@@ -280,9 +322,7 @@ button { font-family: inherit; }
   outline: none;
 }
 
-.search::placeholder {
-  color: rgba(255,255,255,0.35);
-}
+.search::placeholder { color: rgba(255,255,255,0.35); }
 
 .filters {
   display: flex;
@@ -299,9 +339,7 @@ button { font-family: inherit; }
   cursor: pointer;
 }
 
-.filter:hover {
-  border-color: rgba(255,255,255,0.22);
-}
+.filter:hover { border-color: rgba(255,255,255,0.22); }
 
 .filter.active {
   color: var(--text-main);
@@ -528,6 +566,7 @@ button { font-family: inherit; }
   .page { padding-top: 88px; }
   .hero { padding: 24px 18px; }
   .footer-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .top-strip-row { flex-direction: column; align-items: flex-start; }
 }
 
 @media (max-width: 480px) {
