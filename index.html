@@ -1,4 +1,4 @@
-Ok now send me full code so i replced adding that dont touch noting else <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -13,6 +13,14 @@ Ok now send me full code so i replced adding that dont touch noting else <!docty
 </head>
 
 <body>
+  <!-- ✅ ONLY ADDED: VIDEO BACKGROUND (behind everything) -->
+  <div class="bg-video-wrap" aria-hidden="true">
+    <video class="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="./fynx-video.mp4" type="video/mp4" />
+    </video>
+    <div class="bg-video-overlay"></div>
+  </div>
+
   <!-- Alive background layers -->
   <canvas id="grokCanvas" class="grok-canvas"></canvas>
   <div class="aurora-bg"></div>
@@ -183,4 +191,4 @@ Ok now send me full code so i replced adding that dont touch noting else <!docty
   <!-- Grok alive background -->
   <script src="./grok-bg.js"></script>
 </body>
-</html> 
+</html>
