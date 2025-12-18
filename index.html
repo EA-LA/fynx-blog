@@ -8,7 +8,8 @@
 </head>
 
 <body>
-  <!-- Background -->
+  <!-- Alive background layers -->
+  <canvas id="grokCanvas" class="grok-canvas"></canvas>
   <div class="aurora-bg"></div>
   <div class="noise-overlay"></div>
 
@@ -29,14 +30,45 @@
       <div class="hero-tag">Press enquiries</div>
 
       <h1 class="hero-title">Got a media or product enquiry?</h1>
+
       <p class="hero-text">
         For interviews, product features or press coverage, reach out to the FYNX team.
         For customer questions about the app, use our support channel.
       </p>
 
+      <!-- LIVE MARKETS (TradingView ticker tape) -->
+      <div class="market-strip">
+        <div class="market-title">Live markets</div>
+
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+          {
+            "symbols": [
+              { "proName": "FX:EURUSD", "title": "EUR/USD" },
+              { "proName": "FX:GBPUSD", "title": "GBP/USD" },
+              { "proName": "FX:USDJPY", "title": "USD/JPY" },
+              { "proName": "OANDA:XAUUSD", "title": "XAU/USD (Gold)" },
+              { "proName": "OANDA:XAGUSD", "title": "XAG/USD (Silver)" },
+              { "proName": "COINBASE:BTCUSD", "title": "BTC/USD" }
+            ],
+            "showSymbolLogo": true,
+            "isTransparent": true,
+            "displayMode": "adaptive",
+            "colorTheme": "dark",
+            "locale": "en"
+          }
+          </script>
+        </div>
+      </div>
+
       <div class="hero-actions">
         <a class="btn-primary" href="mailto:ha6876122@gmail.com">Contact press team</a>
-        <a class="btn-ghost" href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank" rel="noreferrer">
+
+        <a class="btn-ghost"
+           href="https://elhamamini.cc/FYNX-Site/support.html"
+           target="_blank"
+           rel="noreferrer">
           Contact support
         </a>
       </div>
@@ -49,7 +81,6 @@
         <p>Deep dives into the features inside your app, risk tools and new releases.</p>
       </div>
 
-      <!-- Controls -->
       <div class="controls">
         <input id="searchInput" class="search" placeholder="Search updates…" />
 
@@ -73,9 +104,13 @@
       </div>
 
       <div class="store-badges">
-        <a class="store-badge" href="https://apps.apple.com/us/app/fynx-finance-world/id6752357210" target="_blank" rel="noreferrer">
+        <a class="store-badge"
+           href="https://apps.apple.com/us/app/fynx-finance-world/id6752357210"
+           target="_blank"
+           rel="noreferrer">
           Download on the App Store
         </a>
+
         <a class="store-badge" href="./google-play.html">Get it on Google Play</a>
       </div>
     </section>
@@ -129,6 +164,12 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+
+  <!-- Your existing blog renderer -->
   <script src="./blog.js"></script>
+
+  <!-- Grok alive background -->
+  <script src="./grok-bg.js"></script>
 </body>
 </html>
+
