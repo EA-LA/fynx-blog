@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <!-- ✅ VIDEO BACKGROUND (added) -->
+  <!-- ✅ VIDEO BACKGROUND -->
   <video class="bg-video" autoplay muted loop playsinline preload="auto">
     <source src="./fynx-video.mp4" type="video/mp4" />
   </video>
@@ -26,7 +26,6 @@
   <div class="noise-overlay"></div>
 
   <header class="site-header">
-    <!-- CHANGED: small top logo text -->
     <div class="logo">FYNX BLOG</div>
 
     <nav class="nav-links">
@@ -38,14 +37,12 @@
   </header>
 
   <main class="page">
-    <!-- TOP: LIVE MARKETS STRIP (NOT inside Press card) -->
     <section class="top-strip" aria-label="Live markets">
       <div class="top-strip-row">
         <div class="top-strip-title">Live markets</div>
         <div class="top-strip-sub">Forex • Gold • Crypto — real-time tape</div>
       </div>
 
-      <!-- TradingView Ticker Tape -->
       <div class="tradingview-widget-container">
         <div class="tradingview-widget-container__widget"></div>
         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
@@ -68,10 +65,8 @@
       </div>
     </section>
 
-    <!-- HERO: PRESS ENQUIRIES -->
     <section class="hero">
       <div class="hero-tag">Press enquiries</div>
-
       <h1 class="hero-title">Got a media or product enquiry?</h1>
 
       <p class="hero-text">
@@ -81,17 +76,12 @@
 
       <div class="hero-actions">
         <a class="btn-primary" href="mailto:ha6876122@gmail.com">Contact press team</a>
-
-        <a class="btn-ghost"
-           href="https://elhamamini.cc/FYNX-Site/support.html"
-           target="_blank"
-           rel="noreferrer">
+        <a class="btn-ghost" href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank" rel="noreferrer">
           Contact support
         </a>
       </div>
     </section>
 
-    <!-- BLOG -->
     <section class="section">
       <div class="section-header">
         <h2>Decrypt — FYNX product &amp; company updates</h2>
@@ -109,11 +99,9 @@
         </div>
       </div>
 
-      <!-- Cards injected by blog.js -->
       <div id="postsGrid" class="cards-grid"></div>
     </section>
 
-    <!-- DOWNLOAD STRIP -->
     <section class="download-strip">
       <div>
         <div class="download-title">Download FYNX</div>
@@ -121,10 +109,7 @@
       </div>
 
       <div class="store-badges">
-        <a class="store-badge"
-           href="https://apps.apple.com/us/app/fynx-finance-world/id6752357210"
-           target="_blank"
-           rel="noreferrer">
+        <a class="store-badge" href="https://apps.apple.com/us/app/fynx-finance-world/id6752357210" target="_blank" rel="noreferrer">
           Download on the App Store
         </a>
 
@@ -132,7 +117,6 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
       <div class="footer-columns">
         <div class="footer-col">
@@ -182,10 +166,7 @@
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 
-  <!-- Your existing blog renderer -->
   <script src="./blog.js"></script>
-
-  <!-- Grok alive background -->
   <script src="./grok-bg.js"></script>
 </body>
 </html>
