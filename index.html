@@ -11,6 +11,8 @@
   <!-- Alive background layers -->
   <canvas id="grokCanvas" class="grok-canvas"></canvas>
   <div class="aurora-bg"></div>
+  <div class="sheen"></div>
+  <div class="vignette"></div>
   <div class="noise-overlay"></div>
 
   <header class="site-header">
@@ -25,7 +27,37 @@
   </header>
 
   <main class="page">
-    <!-- HERO -->
+    <!-- TOP: LIVE MARKETS STRIP (NOT inside Press card) -->
+    <section class="top-strip" aria-label="Live markets">
+      <div class="top-strip-row">
+        <div class="top-strip-title">Live markets</div>
+        <div class="top-strip-sub">Forex • Gold • Crypto — real-time tape</div>
+      </div>
+
+      <!-- TradingView Ticker Tape -->
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+          "symbols": [
+            { "proName": "FX:EURUSD", "title": "EUR/USD" },
+            { "proName": "FX:GBPUSD", "title": "GBP/USD" },
+            { "proName": "FX:USDJPY", "title": "USD/JPY" },
+            { "proName": "OANDA:XAUUSD", "title": "XAU/USD (Gold)" },
+            { "proName": "OANDA:XAGUSD", "title": "XAG/USD (Silver)" },
+            { "proName": "COINBASE:BTCUSD", "title": "BTC/USD" }
+          ],
+          "showSymbolLogo": true,
+          "isTransparent": true,
+          "displayMode": "adaptive",
+          "colorTheme": "dark",
+          "locale": "en"
+        }
+        </script>
+      </div>
+    </section>
+
+    <!-- HERO: PRESS ENQUIRIES -->
     <section class="hero">
       <div class="hero-tag">Press enquiries</div>
 
@@ -35,32 +67,6 @@
         For interviews, product features or press coverage, reach out to the FYNX team.
         For customer questions about the app, use our support channel.
       </p>
-
-      <!-- LIVE MARKETS (TradingView ticker tape) -->
-      <div class="market-strip">
-        <div class="market-title">Live markets</div>
-
-        <div class="tradingview-widget-container">
-          <div class="tradingview-widget-container__widget"></div>
-          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-          {
-            "symbols": [
-              { "proName": "FX:EURUSD", "title": "EUR/USD" },
-              { "proName": "FX:GBPUSD", "title": "GBP/USD" },
-              { "proName": "FX:USDJPY", "title": "USD/JPY" },
-              { "proName": "OANDA:XAUUSD", "title": "XAU/USD (Gold)" },
-              { "proName": "OANDA:XAGUSD", "title": "XAG/USD (Silver)" },
-              { "proName": "COINBASE:BTCUSD", "title": "BTC/USD" }
-            ],
-            "showSymbolLogo": true,
-            "isTransparent": true,
-            "displayMode": "adaptive",
-            "colorTheme": "dark",
-            "locale": "en"
-          }
-          </script>
-        </div>
-      </div>
 
       <div class="hero-actions">
         <a class="btn-primary" href="mailto:ha6876122@gmail.com">Contact press team</a>
@@ -172,4 +178,3 @@
   <script src="./grok-bg.js"></script>
 </body>
 </html>
-
