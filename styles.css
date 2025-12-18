@@ -1,531 +1,608 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>FYNX — Trading Tools for iOS</title>
-  <meta name="description" content="FYNX. Clean trading tools on iPhone."/>
+:root {
+  color-scheme: dark;
 
-  <!-- Base stylesheet -->
-  <link rel="stylesheet" href="assets/styles.css"/>
+  --bg: #050608;
 
-  <!-- Page-specific tuning to match blog / Dekrypt style -->
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg: #050608;
-      --bg-elevated: #0c0f16;
-      --bg-soft: #11141e;
-      --border-subtle: rgba(255,255,255,0.05);
-      --text-main: #f5f5f7;
-      --text-muted: #a0a4b0;
-      --accent: #28f0c8;
-      --accent-soft: rgba(40,240,200,0.12);
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --shadow-soft: 0 22px 60px rgba(0,0,0,0.65);
-    }
+  --card-bg: rgba(255, 255, 255, 0.02);
+  --card-border: rgba(255, 255, 255, 0.06);
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, "SF Pro Text", sans-serif;
-      background:
-        radial-gradient(circle at top left, #202938 0, transparent 55%),
-        radial-gradient(circle at bottom right, #0b4234 0, transparent 60%),
-        var(--bg);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-    }
+  --text-main: #f5f5f7;
+  --text-soft: #a5a5b0;
 
-    .header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(20px);
-      background: linear-gradient(to bottom,
-        rgba(5,6,8,0.95),
-        rgba(5,6,8,0.85),
-        transparent);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-    }
+  --accent: #30f0b0;
+  --accent-soft: rgba(48, 240, 176, 0.18);
 
-    .container {
-      width: min(1100px, 92vw);
-      margin: 0 auto;
-    }
+  --radius-lg: 22px;
+  --radius-md: 18px;
+  --radius-sm: 999px;
 
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0 10px;
-    }
+  --shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.7);
 
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-size: 13px;
-      color: var(--text-main);
-      text-decoration: none;
-    }
+  --font: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
 
-    .brand .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 16px rgba(40,240,200,0.9);
-    }
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
-    .navlinks {
-      display: flex;
-      gap: 18px;
-      font-size: 13px;
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-main);
+}
 
-    .navlinks a {
-      color: var(--text-muted);
-      text-decoration: none;
-      padding: 4px 0;
-    }
+a { color: inherit; }
+button { font-family: inherit; }
 
-    .navlinks a:hover {
-      color: var(--accent);
-    }
+/* =========================
+   ALIVE GROK BACKGROUND
+   ========================= */
 
-    main {
-      flex: 1;
-      padding: 40px 0 60px;
-    }
+/* moving canvas (monochrome) */
+.grok-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -6;
+  pointer-events: none;
+  opacity: 0.95;
+}
 
-    /* Layout helpers */
-    .grid {
-      display: grid;
-      gap: 32px;
-    }
+/* subtle aurora base */
+.aurora-bg {
+  position: fixed;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255,255,255,0.06) 0, transparent 58%),
+    radial-gradient(circle at 88% 18%, rgba(255,255,255,0.04) 0, transparent 60%),
+    radial-gradient(circle at 20% 92%, rgba(48,240,176,0.05) 0, transparent 62%),
+    radial-gradient(circle at 90% 84%, rgba(255,255,255,0.03) 0, transparent 62%);
+  background-size: 160% 160%;
+  animation: drift 34s linear infinite alternate;
+  z-index: -7;
+  filter: saturate(0.25);
+}
 
-    @media (min-width: 840px) {
-      .grid {
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-        align-items: center;
-      }
-    }
+/* slow sheen to make it feel alive (very subtle) */
+.sheen {
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: -5;
+  opacity: 0.10;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.14), transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.10), transparent 55%);
+  animation: sheenMove 22s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+}
 
-    .hero {
-      padding: 18px 0 40px;
-    }
+/* vignette for cinematic depth */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -4;
+  background: radial-gradient(circle at 50% 30%,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0.35) 58%,
+    rgba(0,0,0,0.62) 100%);
+}
 
-    .hero-shell {
-      background: radial-gradient(circle at top right, rgba(40,240,200,0.08), transparent 55%),
-                  radial-gradient(circle at bottom left, rgba(82,117,255,0.08), transparent 55%),
-                  linear-gradient(to bottom, #05070b, #05070b);
-      border-radius: 32px;
-      padding: 26px 22px 26px;
-      border: 1px solid rgba(255,255,255,0.04);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-    }
+/* grain */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  mix-blend-mode: soft-light;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  background-size: 220px;
+  z-index: -3;
+}
 
-    .hero-shell::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      opacity: 0.35;
-      background:
-        radial-gradient(circle at 20% 0%, rgba(40,240,200,0.18), transparent 55%),
-        radial-gradient(circle at 90% 60%, rgba(255,255,255,0.06), transparent 55%);
-      mix-blend-mode: screen;
-      pointer-events: none;
-    }
+@keyframes drift {
+  0%   { transform: translate3d(-18px, -18px, 0) scale(1.04); }
+  50%  { transform: translate3d(16px, 10px, 0) scale(1.03); }
+  100% { transform: translate3d(-12px, 16px, 0) scale(1.05); }
+}
 
-    .hero-content {
-      position: relative;
-      z-index: 1;
-    }
+@keyframes sheenMove {
+  0%   { transform: translate3d(-1.5%, -1%, 0) scale(1.02); }
+  100% { transform: translate3d(1.5%, 1%, 0) scale(1.05); }
+}
 
-    .eyebrow {
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 11px;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
+/* =========================
+   LAYOUT / HEADER
+   ========================= */
 
-    .h1 {
-      font-size: clamp(28px, 4vw, 36px);
-      line-height: 1.12;
-      margin: 0 0 12px;
-    }
+.page {
+  min-height: 100vh;
+  padding: 96px 20px 72px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
 
-    .subtitle {
-      margin: 0 0 18px;
-      color: var(--text-muted);
-      font-size: 15px;
-      max-width: 32rem;
-    }
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  max-width: 1120px;
+  margin: 0 auto;
+  backdrop-filter: blur(22px);
+  background: linear-gradient(to bottom, rgba(5, 6, 8, 0.88), transparent);
+  z-index: 10;
+}
 
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+.logo {
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  font-size: 14px;
+  text-transform: uppercase;
+}
 
-    .hero-pill {
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(15,18,26,0.8);
-    }
+.nav-links {
+  display: flex;
+  gap: 18px;
+  font-size: 13px;
+}
 
-    .cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
+.nav-links a {
+  color: var(--text-soft);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 4px;
+}
 
-    .btn-primary,
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border-radius: 999px;
-      padding: 10px 18px;
-      font-size: 14px;
-      border: 1px solid transparent;
-      text-decoration: none;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.2s ease-out;
+}
 
-    .btn-primary {
-      background: var(--accent);
-      color: #02040a;
-      font-weight: 600;
-      box-shadow: 0 0 20px rgba(40,240,200,0.7);
-    }
+.nav-links a:hover { color: var(--text-main); }
+.nav-links a:hover::after { width: 100%; }
 
-    .btn-primary:hover {
-      filter: brightness(1.05);
-      box-shadow: 0 0 30px rgba(40,240,200,0.9);
-    }
+/* =========================
+   LIVE MARKETS TOP STRIP
+   ========================= */
 
-    .btn-ghost {
-      border-color: rgba(255,255,255,0.16);
-      background: rgba(8,10,18,0.9);
-      color: var(--text-main);
-    }
+.top-strip {
+  margin-top: 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  padding: 14px 14px 10px;
+  box-shadow: var(--shadow-soft);
+}
 
-    .btn-ghost span.coming {
-      font-size: 11px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
+.top-strip-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
 
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      background: rgba(8,10,18,1);
-    }
+.top-strip-title {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+}
 
-    .icon {
-      width: 17px;
-      height: 17px;
-    }
+.top-strip-sub {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+}
 
-    .phone-shell {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+/* =========================
+   HERO (Press)
+   ========================= */
 
-    .phone-shell::before {
-      content: "";
-      position: absolute;
-      inset: 16px 8px 0 8px;
-      border-radius: 32px;
-      background: radial-gradient(circle at top, rgba(40,240,200,0.25), transparent 55%);
-      opacity: 0.6;
-      filter: blur(12px);
-    }
+.hero {
+  margin-top: 18px;
+  padding: 32px 24px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top left, rgba(48, 240, 176, 0.08), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.04), transparent 60%),
+    rgba(5, 6, 8, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-soft);
+}
 
-    .phone {
-      position: relative;
-      z-index: 1;
-      max-width: 260px;
-      width: 100%;
-      border-radius: 40px;
-      border: 1px solid rgba(255,255,255,0.25);
-      box-shadow: 0 28px 70px rgba(0,0,0,0.9);
-      display: block;
-    }
+.hero-tag {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 14px;
+}
 
-    .section {
-      padding: 18px 0 40px;
-    }
+.hero-title {
+  font-size: clamp(26px, 4vw, 32px);
+  margin: 0 0 10px;
+}
 
-    .kicker {
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 11px;
-      color: var(--accent);
-      display: inline-block;
-      margin-bottom: 10px;
-    }
+.hero-text {
+  color: var(--text-soft);
+  max-width: 680px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
 
-    .section h2 {
-      margin: 0 0 10px;
-      font-size: 22px;
-    }
+.hero-actions {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-    .section > .container > p {
-      margin: 0 0 18px;
-      color: var(--text-muted);
-      max-width: 40rem;
-      font-size: 14px;
-    }
+/* buttons */
+.btn-primary,
+.btn-ghost {
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
 
-    .cards {
-      display: grid;
-      gap: 16px;
-      margin-top: 6px;
-    }
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #ffffff);
+  color: #050608;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8);
+}
+.btn-primary:hover { filter: brightness(1.04); }
 
-    @media (min-width: 720px) {
-      .cards {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.03);
+}
 
-    .card {
-      background: linear-gradient(145deg, var(--bg-soft), #090b12);
-      border-radius: var(--radius-lg);
-      padding: 16px 16px 18px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.6);
-      font-size: 14px;
-    }
+/* =========================
+   SECTIONS
+   ========================= */
 
-    .card h3 {
-      margin: 0 0 6px;
-      font-size: 15px;
-    }
+.section { margin-top: 40px; }
 
-    .card p {
-      margin: 0;
-      color: var(--text-muted);
-      font-size: 13px;
-    }
+.section-header h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
 
-    .tip-card {
-      margin-top: 14px;
-      border-radius: 999px;
-      background: rgba(14,18,24,0.95);
-      border: 1px dashed rgba(255,255,255,0.16);
-      padding: 10px 14px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+.section-header p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 14px;
+}
 
-    .tip-card strong {
-      color: var(--accent);
-      margin-right: 4px;
-    }
+/* search + filter */
+.controls {
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
 
-    ol {
-      padding-left: 18px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
+.search {
+  flex: 1;
+  min-width: 240px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.02);
+  color: var(--text-main);
+  outline: none;
+}
 
-    ol li + li {
-      margin-top: 4px;
-    }
+.search::placeholder { color: rgba(255,255,255,0.35); }
 
-    .footer {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 20px 0 26px;
-      background: radial-gradient(circle at top, rgba(40,240,200,0.08), transparent 60%),
-                  rgba(3,4,7,0.98);
-    }
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-    .footer .links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px 20px;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+.filter {
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.02);
+  color: var(--text-soft);
+  cursor: pointer;
+}
 
-    .footer a {
-      color: var(--text-muted);
-      text-decoration: none;
-    }
+.filter:hover { border-color: rgba(255,255,255,0.22); }
 
-    .footer a:hover {
-      color: var(--accent);
-    }
+.filter.active {
+  color: var(--text-main);
+  border-color: rgba(255,255,255,0.26);
+  background: rgba(255,255,255,0.06);
+}
 
-    .footer-small {
-      font-size: 11px;
-      opacity: 0.75;
-    }
-  </style>
-</head>
-<body>
-  <!-- Header -->
-  <header class="header">
-    <div class="container nav">
-      <a class="brand" href="index.html">
-        <span class="dot"></span>
-        <span>FYNX</span>
-      </a>
-      <nav class="navlinks">
-        <a href="#features">Features</a>
-        <a href="#screens">Screens</a>
-        <a href="#getting-started">Getting Started</a>
-      </nav>
-    </div>
-  </header>
+/* =========================
+   BLOG CARDS
+   ========================= */
 
-  <main>
-    <!-- Hero (blog-style shell) -->
-    <section class="hero">
-      <div class="container hero-shell">
-        <div class="grid hero-content">
-          <div>
-            <div class="eyebrow">Trading tools for serious accounts</div>
-            <h1 class="h1">FYNX for iOS</h1>
-            <p class="subtitle">
-              Precision trading utilities on your iPhone — risk engine, calculators, journal
-              and prop-mode tools built for funded traders and day traders.
-            </p>
+.cards-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
 
-            <div class="hero-meta">
-              <div class="hero-pill">Zero ads • No tracking across apps</div>
-              <div class="hero-pill">Built for gold, FX, indices &amp; crypto traders</div>
-            </div>
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 18px 18px 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+}
 
-            <div class="cta-row">
-              <!-- REAL App Store link -->
-              <a class="btn-primary" href="https://apps.apple.com/us/app/fynx-finance-world/id6752357210"
-                 target="_blank" rel="noopener">
-                <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M17.7 11.1c-.1-2.3 2-3.4 2.1-3.4-1.2-1.7-3.1-1.9-3.7-1.9-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.3-.9-1.7 0-3.2 1-4.1 2.5-1.8 3.1-.5 7.8 1.3 10.3.9 1.3 1.9 2.7 3.3 2.7 1.3 0 1.8-.9 3.4-.9s2 .9 3.3.9 2.3-1.3 3.2-2.6c1-1.4 1.4-2.7 1.4-2.8-.1 0-2.7-1-2.8-4.8zM15.6 3.8c.7-.8 1.2-1.9 1.1-3-1 .1-2.1.7-2.7 1.5-.6.7-1.2 1.8-1.1 2.9 1 .1 2-.5 2.7-1.4z"/>
-                </svg>
-                Download on the App Store
-              </a>
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle at 0 0, rgba(255,255,255,0.08), transparent 55%);
+  opacity: 0;
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  transform: translate3d(-10px, -10px, 0);
+}
 
-              <!-- Google Play – coming soon page -->
-              <a class="btn-ghost" href="android.html">
-                <div>
-                  <div>Get it on Google Play</div>
-                  <span class="coming">Coming soon</span>
-                </div>
-              </a>
-            </div>
+.card:hover::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
 
-            <p class="subtitle" style="margin-top: 4px; font-size: 12px;">
-              iOS first. Android build is in progress — join early to shape the tools.
-            </p>
-          </div>
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
 
-          <div class="phone-shell">
-            <img class="phone" src="assets/hero-phone.PNG" alt="FYNX screenshot" loading="eager">
-          </div>
-        </div>
-      </div>
-    </section>
+.card-tag {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.08);
+}
 
-    <!-- Features -->
-    <section id="features" class="section">
-      <div class="container">
-        <span class="kicker">Key Features</span>
-        <h2>Built for speed, clarity, and control</h2>
-        <p>Everything inside FYNX is designed to keep you out of revenge trades and random risk, and
-           make your daily decisions repeatable.</p>
+.card-date {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  font-variant-numeric: tabular-nums;
+}
 
-        <div class="cards">
-          <div class="card">
-            <h3>Guardian Risk Manager</h3>
-            <p>Position sizing, RR presets, ATR stops and daily risk limits — calculated in seconds.</p>
-          </div>
-          <div class="card">
-            <h3>Multi-Timeframe Stack</h3>
-            <p>Top-down bias with quick jumps between 5m–4h views. Keep your HTF plan in front of you.</p>
-          </div>
-          <div class="card">
-            <h3>Journal &amp; Metrics</h3>
-            <p>Tag trades by setup, session and emotion. Track streaks and see exactly what’s paying you.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+.card-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  position: relative;
+  z-index: 1;
+  line-height: 1.25;
+}
 
-    <!-- Screens -->
-    <section id="screens" class="section">
-      <div class="container grid">
-        <div class="phone-shell">
-          <img class="phone" src="assets/screen-trade.PNG" alt="Trade view" loading="lazy">
-        </div>
-        <div>
-          <span class="kicker">Screens</span>
-          <h2>Clean, focused views</h2>
-          <p>Minimal UI, zero clutter. You see the risk, the RR, and your rules — not ads or social noise.</p>
-          <div class="tip-card">
-            <strong>Tip</strong> Start with small risk until your stats are consistent. FYNX makes it easy
-            to scale once your edge is proven.
-          </div>
-        </div>
-      </div>
-    </section>
+.card-text {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
 
-    <!-- Getting started -->
-    <section id="getting-started" class="section">
-      <div class="container grid">
-        <div>
-          <span class="kicker">Onboarding</span>
-          <h2>Getting started in under 2 minutes</h2>
-          <ol>
-            <li>Install FYNX from the App Store.</li>
-            <li>Open <strong>Settings</strong> and set your account risk %, currency and default symbol.</li>
-            <li>Log your first trade in the journal and tag it by setup and session.</li>
-          </ol>
-        </div>
-        <div class="phone-shell">
-          <img class="phone" src="assets/screen-setting.PNG" alt="Settings view" loading="lazy">
-        </div>
-      </div>
-    </section>
-  </main>
+.card-footer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container links">
-      <div style="display:flex;flex-wrap:wrap;gap:14px 20px;">
-        <a href="https://elhamamini.cc/FYNX-Site/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>
-        <a href="https://elhamamini.cc/FYNX-Site/terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>
-        <a href="https://elhamamini.cc/FYNX-Site/faqs.html" target="_blank" rel="noopener">FAQs</a>
-        <a href="https://elhamamini.cc/FYNX-Site/support.html" target="_blank" rel="noopener">Support</a>
-      </div>
-      <div class="footer-small">
-        © 2025 FYNX • <a href="https://elhamamini.cc" target="_blank" rel="noopener">elhamamini.cc</a>
-      </div>
-    </div>
-  </footer>
-</body>
-</html>
+.card-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+}
+
+.card-link {
+  font-size: 12px;
+  color: rgba(255,255,255,0.78);
+}
+
+/* =========================
+   DOWNLOAD STRIP
+   ========================= */
+
+.download-strip {
+  margin-top: 24px;
+  padding: 18px 16px;
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at left, rgba(255,255,255,0.10), transparent 60%),
+    rgba(9, 12, 18, 0.92);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.download-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.download-text {
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+.store-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.store-badge {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 13px;
+  text-decoration: none;
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.store-badge:hover {
+  border-color: rgba(255,255,255,0.26);
+  background: rgba(255,255,255,0.03);
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.site-footer {
+  margin-top: 52px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 12px;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.footer-col h4 {
+  font-size: 11px;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+  color: var(--text-soft);
+}
+
+.footer-col a {
+  display: block;
+  text-decoration: none;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+}
+
+.footer-col a:hover { color: var(--text-main); }
+
+.footer-bottom {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-soft);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: var(--text-soft);
+}
+
+.footer-links a:hover { color: var(--text-main); }
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 720px) {
+  .site-header { padding-inline: 16px; }
+  .nav-links { display: none; }
+  .page { padding-top: 88px; }
+  .hero { padding: 24px 18px; }
+  .footer-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .top-strip-row { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .footer-columns { grid-template-columns: 1fr 1fr; }
+}
+
+/* =========================
+   ✅ NEW: VIDEO BACKGROUND ONLY
+   ========================= */
+
+.bg-video-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: -20; /* below aurora(-7) + canvas(-6) + everything */
+  pointer-events: none;
+  overflow: hidden;
+  background: #000;
+}
+
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65;
+  filter: grayscale(1) contrast(1.1) brightness(0.45);
+  transform: scale(1.02);
+}
+
+.bg-video-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.08), transparent 55%),
+    radial-gradient(circle at 20% 80%, rgba(48,240,176,0.05), transparent 60%),
+    linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.75));
+  opacity: 0.55;
+}
