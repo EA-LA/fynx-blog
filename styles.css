@@ -146,17 +146,6 @@ button { font-family: inherit; }
   letter-spacing: 0.18em;
   font-size: 14px;
   text-transform: uppercase;
-
-  /* ADDED: make image behave correctly in header */
-  display: flex;
-  align-items: center;
-}
-
-/* ADDED: logo image sizing */
-.fynx-logo {
-  height: 34px;
-  width: auto;
-  display: block;
 }
 
 .nav-links {
@@ -574,10 +563,6 @@ button { font-family: inherit; }
 @media (max-width: 720px) {
   .site-header { padding-inline: 16px; }
   .nav-links { display: none; }
-
-  /* ADDED: center the logo in the TOP header on mobile */
-  .site-header { justify-content: center; }
-
   .page { padding-top: 88px; }
   .hero { padding: 24px 18px; }
   .footer-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
