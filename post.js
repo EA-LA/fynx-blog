@@ -3,7 +3,7 @@ function qs(name) {
 }
 
 function formatDate(iso) {
-  const d = new Date(iso);
+  const d = new Date(iso + "T12:00:00");
   return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
 }
 
@@ -27,9 +27,10 @@ async function main() {
   const meta = posts.find(p => p.slug === slug);
   if (!meta) throw new Error("Post not found in posts.json");
 
-  document.title = `Decrypt — ${meta.title}`;
+  document.title = `${meta.title} — FYNX Journal`;
   document.getElementById("postCategory").textContent = meta.category;
-  document.getElementById("postDate").textContent = formatDate(meta.date);
+  document.getElementById("postDate").textContent = formatDate(meta.date) + (meta.updated ? ` · Updated ${formatDate(meta.updated)}` : "");
+  document.querySelector('meta[name="description"]').content = meta.excerpt;
   document.getElementById("postTitle").textContent = meta.title;
   document.getElementById("postExcerpt").textContent = meta.excerpt;
 
@@ -39,7 +40,8 @@ async function main() {
 
 main().catch(err => {
   console.error(err);
+  document.getElementById("postTitle").textContent = "Article unavailable";
   document.getElementById("postBody").innerHTML =
-    `<div style="color:#ffb4b4">This post failed to load: ${err.message}</div>`;
+    `<p>This article is unavailable. <a href="./index.html">Return to all articles</a>.</p>`;
 });
 

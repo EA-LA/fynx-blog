@@ -1,34 +1,62 @@
 [
   {
+    "slug": "meet-fynx-funded",
+    "category": "FYNX Funded",
+    "title": "A closer look at FYNX Funded",
+    "excerpt": "An introduction to the funded side of the FYNX ecosystem, and what to review before choosing an evaluation.",
+    "date": "2026-09-09",
+    "meta": "FYNX Editorial"
+  },
+  {
+    "slug": "evaluation-preparation",
+    "category": "Trading Practice",
+    "title": "Before your first evaluation: a preparation checklist",
+    "excerpt": "Five things to understand before the first session, from loss calculations to your review routine.",
+    "date": "2026-09-09",
+    "meta": "FYNX Editorial"
+  },
+  {
+    "slug": "fynx-ecosystem",
+    "category": "Announcements",
+    "title": "One FYNX ecosystem. A clearer path through it.",
+    "excerpt": "Where Finance World, the app, FYNX Funded and the journal fit into your trading routine.",
+    "date": "2026-09-09",
+    "meta": "FYNX Editorial"
+  },
+  {
     "slug": "guardian-firewall",
     "category": "Product Features",
     "title": "Guardian: Your risk & emotion firewall",
-    "excerpt": "How Guardian watches your daily risk, tracks streaks, and shields your account from revenge trading. Screenshots, examples and setup guide.",
+    "excerpt": "A look at risk behavior, session reviews and the habits behind a more deliberate trading routine.",
     "date": "2025-12-17",
-    "meta": "FYNX • Risk"
+    "meta": "FYNX \u2022 Risk",
+    "updated": "2026-09-09"
   },
   {
     "slug": "calculators-stack",
     "category": "Product Features",
     "title": "Inside the FYNX calculators stack",
-    "excerpt": "All the tools under one roof – lot size, margin, pip value, options & more. Real examples and how the math is done for you.",
+    "excerpt": "Position size, margin and pip value: understanding the inputs behind a useful calculation.",
     "date": "2025-12-17",
-    "meta": "FYNX • Calculators"
+    "meta": "FYNX \u2022 Calculators",
+    "updated": "2026-09-09"
   },
   {
     "slug": "journal-2-live",
     "category": "Announcements",
-    "title": "Trading Journal 2.0 is now live",
-    "excerpt": "A new way to document your plays with tags, screenshots and Guardian metrics baked in. Built for funded traders and serious accounts.",
+    "title": "Building a useful trading journal",
+    "excerpt": "A practical approach to documenting decisions and reviewing the process behind each trade.",
     "date": "2025-12-17",
-    "meta": "FYNX • Journal"
+    "meta": "FYNX \u2022 Journal",
+    "updated": "2026-09-09"
   },
   {
     "slug": "prop-mode-challenge",
     "category": "Promotions",
     "title": "Prop Mode: Built for challenge accounts",
-    "excerpt": "Track daily drawdown, overall limits and reset behaviour for any prop rule set. Alerts and logic that help you avoid blowing evaluations.",
+    "excerpt": "Why daily loss calculations, overall limits and reset times belong in your challenge-account routine.",
     "date": "2025-12-17",
-    "meta": "FYNX • Prop"
+    "meta": "FYNX \u2022 Prop",
+    "updated": "2026-09-09"
   }
 ]

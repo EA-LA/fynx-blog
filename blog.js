@@ -5,7 +5,7 @@ async function loadPosts() {
 }
 
 function formatDate(iso) {
-  const d = new Date(iso);
+  const d = new Date(iso + "T12:00:00");
   return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
 }
 
@@ -33,7 +33,7 @@ async function main() {
   const searchInput = document.getElementById("searchInput");
   const filterButtons = Array.from(document.querySelectorAll(".filter"));
 
-  const posts = await loadPosts();
+  const posts = (await loadPosts()).sort((a, b) => b.date.localeCompare(a.date));
 
   function getActiveFilter() {
     const btn = filterButtons.find(b => b.classList.contains("active"));
@@ -51,13 +51,15 @@ async function main() {
       return matchesFilter && matchesSearch;
     });
 
-    grid.innerHTML = filtered.map(cardHTML).join("");
+    grid.innerHTML = filtered.length ? filtered.map(cardHTML).join("") : `<p class="empty">No articles match your search. Try another term or choose All posts.</p>`;
+    document.getElementById("resultCount").textContent = `${filtered.length} article${filtered.length === 1 ? "" : "s"}`;
   }
 
   filterButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-      filterButtons.forEach(b => b.classList.remove("active"));
+      filterButtons.forEach(b => { b.classList.remove("active"); b.setAttribute("aria-pressed", "false"); });
       btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
       apply();
     });
   });
@@ -70,5 +72,5 @@ async function main() {
 main().catch(err => {
   console.error(err);
   const grid = document.getElementById("postsGrid");
-  if (grid) grid.innerHTML = `<div style="color:#ffb4b4">Blog failed to load. Check file paths.</div>`;
+  if (grid) grid.innerHTML = `<div style="color:#ffb4b4">Articles could not load. Please refresh the page to try again.</div>`;
 });
