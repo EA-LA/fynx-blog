@@ -27,7 +27,8 @@ async function main() {
   const meta = posts.find(p => p.slug === slug);
   if (!meta) throw new Error("Post not found in posts.json");
 
-  document.title = `${meta.title} — FYNX Journal`;
+  location.replace(`./articles/${encodeURIComponent(meta.slug)}.html`);
+  return;
   document.getElementById("postCategory").textContent = meta.category;
   document.getElementById("postDate").textContent = formatDate(meta.date) + (meta.updated ? ` · Updated ${formatDate(meta.updated)}` : "");
   document.querySelector('meta[name="description"]').content = meta.excerpt;

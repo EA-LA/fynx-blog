@@ -11,7 +11,7 @@ function formatDate(iso) {
 
 function cardHTML(p) {
   return `
-    <a class="card" href="./post.html?slug=${encodeURIComponent(p.slug)}">
+    <a class="card" href="./articles/${encodeURIComponent(p.slug)}.html">
       <div class="card-top">
         <span class="card-tag">${p.category}</span>
         <span class="card-date">${formatDate(p.date)}</span>
