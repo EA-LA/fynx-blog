@@ -8,6 +8,7 @@ def meta(s,title,desc,url,private=False):
  s=re.sub(r'<link\b[^>]*rel=["\']canonical["\'][^>]*>','',s,flags=re.I)
  tags=f'<meta name="description" content="{html.escape(desc,quote=True)}">\n<meta name="robots" content="{"noindex, follow" if private else "index, follow, max-image-preview:large"}">\n<link rel="canonical" href="{html.escape(url,quote=True)}">\n'
  for key,val in [('og:title',title),('og:description',desc),('og:url',url)]: tags+=f'<meta property="{key}" content="{html.escape(val,quote=True)}">\n'
+ s=re.sub(r'\n[ \t]*\n+', '\n', s)
  return s.replace('</head>',tags+'</head>')
 def maps(base,domain,urls):
  (base/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>'+html.escape(u)+'</loc></url>\n' for u in sorted(set(urls)))+'</urlset>\n')
