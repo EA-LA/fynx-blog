@@ -41,8 +41,8 @@ for p in (base/'posts').rglob('*.html'):
  if p.stem not in {x['slug'] for x in posts}: raise ValueError('Unknown legacy article: '+str(p))
  p.write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Article moved | FYNX Journal</title><meta name="robots" content="noindex,follow"><link rel="canonical" href="{destination}"><meta http-equiv="refresh" content="0;url={destination}"></head><body><p><a href="{destination}">Read the complete FYNX Journal article</a>.</p></body></html>')
 p=base/'post.html';s=p.read_text();s=meta(s,'Find an Article | FYNX Journal','Open an article from the FYNX Journal collection.',domain+'/',True);p.write_text(s)
-org={'@type':'Organization','@id':'https://www.fynxfinanceworld.com/#organization','name':'FYNX','url':'https://www.fynxfinanceworld.com/','founder':{'@id':'https://elhamamini.cc/#person'}}
-person={'@type':'Person','@id':'https://elhamamini.cc/#person','name':'Elham Amini','url':'https://elhamamini.cc/','sameAs':['https://www.linkedin.com/in/elham-amini-745560302/','https://www.instagram.com/___elham_amini___/']}
+org={'@type':'Organization','@id':'https://www.fynxfinanceworld.com/#organization','name':'FYNX','url':'https://www.fynxfinanceworld.com/','founder':{'@id':'https://ea-la.github.io/#person'}}
+person={'@type':'Person','@id':'https://ea-la.github.io/#person','name':'Elham Amini','url':'https://ea-la.github.io/','sameAs':['https://www.linkedin.com/in/elham-amini-745560302/','https://www.instagram.com/___elham_amini___/']}
 for url in urls:
  p=base/('index.html' if url==domain+'/' else url[len(domain)+1:]);s=p.read_text();s=re.sub(r'<!-- search-identity:start -->.*?<!-- search-identity:end -->','',s,flags=re.S)
  title=clean(re.search('<title>(.*?)</title>',s,re.S)[1])
@@ -50,6 +50,6 @@ for url in urls:
  if url==domain+'/': page['mainEntity']={'@type':'ItemList','itemListElement':[{'@type':'ListItem','position':i+1,'url':domain+'/articles/'+x['slug']+'.html','name':x['title']} for i,x in enumerate(posts)]}
  graph=[org,person,{'@type':'WebSite','@id':domain+'/#website','url':domain+'/','name':'FYNX Journal','publisher':{'@id':org['@id']}},page]
  s=s.replace('</head>','<!-- search-identity:start --><script type="application/ld+json">'+json.dumps({'@context':'https://schema.org','@graph':graph}).replace('<','\\u003c')+'</script><!-- search-identity:end --></head>')
- if 'https://elhamamini.cc/' not in re.sub('<head>.*?</head>','',s,flags=re.S): s=s.replace('</footer>','<p><a href="https://www.fynxfinanceworld.com/about.html">About FYNX</a> · <a href="https://elhamamini.cc/">Elham Amini, founder</a></p></footer>')
+ if 'https://ea-la.github.io/' not in re.sub('<head>.*?</head>','',s,flags=re.S): s=s.replace('</footer>','<p><a href="https://www.fynxfinanceworld.com/about.html">About FYNX</a> · <a href="https://ea-la.github.io/">Elham Amini, founder</a></p></footer>')
  p.write_text(s)
 (base/'_config.yml').write_text('exclude:\n  - content\n  - scripts\n  - README.md\n')
